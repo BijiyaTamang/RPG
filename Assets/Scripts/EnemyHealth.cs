@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public int expReward = 3;
+    public delegate void EnemyDeath(int exp); // Define a delegate type for the monster death event, which takes an integer parameter for experience reward
+   public static event EnemyDeath OnEnemyDeath; // Declare a static event of the MonsterDeath delegate type
     public int currentHealth;
     public int maxHealth;
     private void Start()
@@ -17,8 +20,10 @@ public class EnemyHealth : MonoBehaviour
         }
         else if(currentHealth <= 0)
         {
+            OnEnemyDeath(expReward); // Trigger the OnEnemyDeath event, passing the experience reward as an argument
             Destroy(gameObject); // Destroy the enemy GameObject if current health drops to zero or below
         }
+
     }
 
 }

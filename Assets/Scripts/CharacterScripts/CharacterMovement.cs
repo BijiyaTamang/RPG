@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float moveSpeed = 5; // Speed at which the character moves
     public int facingDirection = 1; // 1 for right, -1 for left
 
     public Rigidbody2D rb; // Reference to the Rigidbody component
@@ -36,7 +35,7 @@ public class CharacterMovement : MonoBehaviour
             anim.SetFloat("Horizontal", Mathf.Abs(horizontalInput)); // Set the "Horizontal" parameter in the Animator to control animations
             anim.SetFloat("Vertical", Mathf.Abs(verticalInput)); // Set the "Vertical" parameter in the Animator to control animations
 
-            rb.linearVelocity = new Vector2(horizontalInput, verticalInput) * moveSpeed; // Set the velocity of the Rigidbody based on input and speed
+            rb.linearVelocity = new Vector2(horizontalInput, verticalInput) * StatsManager.Instance.moveSpeed; // Set the velocity of the Rigidbody based on input and speed
         }
     }
     void Flip()
