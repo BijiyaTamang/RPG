@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -15,7 +16,6 @@ public class EnemyMovement : MonoBehaviour
     public float playerDetectionRange = 5; // Range within which the enemy can detect the player
     public Transform detectionPoint; // Reference to the point from which the enemy will detect the player
     public LayerMask playerLayer; // Layer mask to specify which layers the enemy should consider as the player
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component attached to the enemy
@@ -25,18 +25,21 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        CheckForPlayer(); // Check for the player's presence and update the enemy's state accordingly
-        if (attackCooldownTimer > 0)
-        {
-            attackCooldownTimer -= Time.deltaTime;
-        }
-        if (enemyState == EnemyState.Chasing) // Check if the enemy is in chasing mode
-        {
-            EnemyChase(); // Call the Chase method to handle chasing behavior
-        }
-        else if (enemyState == EnemyState.Attacking) // Check if the enemy is in attacking mode
-        {
-            rb.linearVelocity = Vector2.zero; // Stop any velocity to prevent the enemy from rotating while attacking
+        if (enemyState != EnemyState.Knockback)
+        { 
+            CheckForPlayer(); // Check for the player's presence and update the enemy's state accordingly
+            if (attackCooldownTimer > 0)
+            {
+                attackCooldownTimer -= Time.deltaTime;
+            }
+            if (enemyState == EnemyState.Chasing) // Check if the enemy is in chasing mode
+            {
+                EnemyChase(); // Call the Chase method to handle chasing behavior
+            }
+            else if (enemyState == EnemyState.Attacking) // Check if the enemy is in attacking mode
+            {
+                rb.linearVelocity = Vector2.zero; // Stop any velocity to prevent the enemy from rotating while attacking
+            }
         }
     }
     void EnemyChase()
@@ -69,7 +72,7 @@ public class EnemyMovement : MonoBehaviour
                 attackCooldownTimer = attackCooldown; // Reset the attack cooldown timer
                 ChangeState(EnemyState.Attacking); // Change the enemy's state to Attacking if the player is within range
             }
-            else if (Vector2.Distance(transform.position, Player.transform.position) > attackRange) // Check if the player is within detection range but not within attack range
+            else if (Vector2.Distance(transform.position, Player.transform.position) > attackRange && enemyState != EnemyState.Attacking) // Check if the player is within detection range but not within attack range
             {
                 ChangeState(EnemyState.Chasing); // Change the enemy's state to Chasing if the player is within detection range but not within attack range
             }
@@ -81,7 +84,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    void ChangeState(EnemyState newState)
+    public void ChangeState(EnemyState newState)
     {
         // Reset the animation parameters for the previous state before transitioning to the new state
         if (enemyState == EnemyState.Idle)
@@ -114,4 +117,5 @@ public enum EnemyState
     Idle,
     Chasing,
     Attacking,
+    Knockback
 }
