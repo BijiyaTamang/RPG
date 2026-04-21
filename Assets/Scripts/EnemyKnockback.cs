@@ -12,11 +12,11 @@ public class EnemyKnockback : MonoBehaviour
         enemyMovement = GetComponent<EnemyMovement>(); // Get the EnemyMovement component attached to the enemy
     }
 
-    public void Knockback(Transform characterTransform, float knockbackForce, float knockbackDuration, float stunTime)
+    public void Knockback(Transform forceTransform, float knockbackForce, float knockbackDuration, float stunTime)
     {
         enemyMovement.ChangeState(EnemyState.Knockback); // Change the enemy's state to Knockback to prevent it from moving or attacking during knockback
         StartCoroutine(StunTimer(knockbackDuration, stunTime)); // Start the stun timer coroutine to reset the enemy's state after the stun time is over
-        Vector2 direction = (transform.position - characterTransform.position).normalized; // Calculate the direction from the character to the enemy and normalize it
+        Vector2 direction = (transform.position - forceTransform.position).normalized; // Calculate the direction from the character to the enemy and normalize it
         rb.linearVelocity = direction * knockbackForce; // Apply the knockback force to the enemy's Rigidbody2D
         
     }

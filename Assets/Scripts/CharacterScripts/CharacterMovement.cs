@@ -4,10 +4,10 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     public int facingDirection = 1; // 1 for right, -1 for left
-
     public Rigidbody2D rb; // Reference to the Rigidbody component
     public Animator anim; // Reference to the Animator component
     private bool isKnockbacked; // Flag to indicate if the enemy is currently being knocked back
+    public bool isShooting;
     public CharacterCombat characterCombat; // Reference to the CharacterCombat script to access attack functionality
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -21,7 +21,11 @@ public class CharacterMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (isKnockbacked == false) // Check if the enemy is currently being knocked back
+        if(isShooting==true)
+        {
+            rb.linearVelocity = Vector2.zero; // Stop any movement while shooting to prevent the character from moving during the shooting animation
+        }
+        else if (isKnockbacked == false) // Check if the enemy is currently being knocked back
         {
             float horizontalInput = Input.GetAxis("Horizontal"); // Get horizontal input (A/D or Left/Right)
             float verticalInput = Input.GetAxis("Vertical"); // Get vertical input (W/S or Up/Down)
