@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: baa23f2f4704c2e449d935dbb5dc0071
+guid: a4b76bdb511924748bc8abb583ccea2b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6053722968521005444
-    second: Banner_Vertical_0
+      213: 4526638008314866843
+    second: Button_Red_9Slides_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Banner_Vertical_0
+      name: Button_Red_9Slides_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 27
-        width: 125
-        height: 143
+        x: 7
+        y: 15
+        width: 178
+        height: 177
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 21, y: 28, z: 18, w: 15}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c76aeacb80bdcfba0800000000000000
-      internalID: -6053722968521005444
+      spriteID: b9ca3601949d1de30800000000000000
+      internalID: 4526638008314866843
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9cd505d7b9b245149b234b17bac4be43
+    spriteID: 3e5c68f3556ae7d43a7590780edc4771
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +133,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Banner_Vertical_0: -6053722968521005444
+      Button_Red_9Slides_0: 4526638008314866843
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

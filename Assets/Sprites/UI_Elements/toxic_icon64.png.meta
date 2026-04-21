@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: baa23f2f4704c2e449d935dbb5dc0071
+guid: dfac24e06bb06a844a5538ab03585ae7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6053722968521005444
-    second: Banner_Vertical_0
+      213: -3480817946377055568
+    second: toxic_icon64_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Banner_Vertical_0
+      name: toxic_icon64_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 27
-        width: 125
-        height: 143
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 21, y: 28, z: 18, w: 15}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c76aeacb80bdcfba0800000000000000
-      internalID: -6053722968521005444
+      spriteID: 0b2146a1586a1bfc0800000000000000
+      internalID: -3480817946377055568
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9cd505d7b9b245149b234b17bac4be43
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Banner_Vertical_0: -6053722968521005444
+      toxic_icon64_0: -3480817946377055568
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

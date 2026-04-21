@@ -17,17 +17,18 @@ public class CharacterCombat : MonoBehaviour
     }
     public void Attack()
     {
-        if ((timer<=0))
-        {
-            anim.SetBool("isAttacking", true); // Set the "isAttacking" parameter in the Animator to trigger the attack animation
+        if (!enabled) return; // block calls if component is disabled
 
-            timer = cooldown; // Reset the timer to the cooldown value to prevent immediate re-attacks
+        if (timer <= 0)
+        {
+            anim.SetBool("isAttacking", true);
+            timer = cooldown;
         }
     }
     public void DealDamage()
     {
         //StatsManager.Instance.damage += 1; // Increase the damage stat in the StatsManager by 1 
-        statsUI.UpdateDamage(); // Update the damage display in the StatsUI to reflect the new damage value
+        // statsUI.UpdateDamage(); // Update the damage display in the StatsUI to reflect the new damage value
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, StatsManager.Instance.weaponRange, enemyLayer); // Get all colliders within a radius of 1 unit around the character's position
 
         if (enemies.Length > 0)

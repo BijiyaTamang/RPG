@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 public class ExpManager : MonoBehaviour
 {
     public int level;
@@ -10,6 +11,7 @@ public class ExpManager : MonoBehaviour
     public Slider expSlider; // Reference to the UI Slider component for displaying experience progress
     public TMP_Text currentLevelText; // Reference to the UI Text component for displaying the current level
 
+    public static event Action<int> OnLevelUp; // Event to notify when the character levels up, passing the new level as an argument
     private void Start()
     {
         UpdateExpUI(); // Call the UpdateExpUI method to initialize the experience UI elements
@@ -43,6 +45,7 @@ public class ExpManager : MonoBehaviour
         level++; // Increase the character's level by 1
         currentExp -= expToLevel; // Subtract the experience required for leveling up from the current experience
         expToLevel = Mathf.RoundToInt(expToLevel * expGrowthMultiplier); // Increase the experience required for the next level by 5
+        OnLevelUp?.Invoke(1); // Invoke the OnLevelUp event to notify subscribers that the character has leveled up, passing the new level as an argument
     }
     public void UpdateExpUI()
     {

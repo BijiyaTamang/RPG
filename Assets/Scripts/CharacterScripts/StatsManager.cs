@@ -1,8 +1,9 @@
 using UnityEngine;
-
+using TMPro;
 public class StatsManager : MonoBehaviour
 {
-    public static StatsManager Instance;
+    public static StatsManager Instance; // Static instance for global access to the StatsManager
+    public TMP_Text healthText; // Reference to the UI Text component for displaying health
 
     [Header("Combat Stats")]
     public int damage;
@@ -27,6 +28,11 @@ public class StatsManager : MonoBehaviour
         {
             Destroy(gameObject); // Destroy this object if another instance already exists
         }
+    }
+    public void UpdateMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        healthText.text = "HP: " + currentHealth + "/ " + maxHealth; // Update the health text to display the current health and maximum health
     }
 
 
