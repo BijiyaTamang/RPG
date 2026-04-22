@@ -191,7 +191,7 @@ MonoBehaviour:
   direction: {x: 1, y: 0}
   speed: 8
   damage: 2
-  knockbackForce: 10
+  knockbackForce: 3
   knockbackTime: 0.5
   stunTime: 1
   lifeSpan: 3
