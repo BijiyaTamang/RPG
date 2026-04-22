@@ -19,6 +19,7 @@ public class StatsUI : MonoBehaviour
                 Time.timeScale = 1; // Resume the game by setting the time scale back to 1
                 UpdateAllStats(); // Update all stats displays to ensure they show the latest values when the stats UI is closed
                 statsCanvas.alpha = 0; // Set the alpha of the CanvasGroup to 0 to make the stats UI invisible
+                statsCanvas.blocksRaycasts = false; // Disable raycasts on the CanvasGroup to prevent interaction with the stats UI when it's closed
                 statsOpen = false;
             }
             else
@@ -26,6 +27,7 @@ public class StatsUI : MonoBehaviour
                 Time.timeScale = 0; // Pause the game by setting the time scale to 0
                 UpdateAllStats(); // Update all stats displays to ensure they show the latest values when the stats UI is opened
                 statsCanvas.alpha = 1; // Set the alpha of the CanvasGroup to 1 to make the stats UI visible
+                statsCanvas.blocksRaycasts = true; // Enable raycasts on the CanvasGroup to allow interaction with the stats UI when it's opened
                 statsOpen = true;
             }
     }

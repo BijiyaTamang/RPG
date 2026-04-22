@@ -87,7 +87,7 @@ MonoBehaviour:
   itemSO: {fileID: 11400000, guid: bf2619c7e9542424cb6126daef60c3dc, type: 2}
   sr: {fileID: 2029669903444199666}
   anim: {fileID: 3566503832037156586}
-  quantity: 3
+  quantity: 1
 --- !u!95 &3566503832037156586
 Animator:
   serializedVersion: 7

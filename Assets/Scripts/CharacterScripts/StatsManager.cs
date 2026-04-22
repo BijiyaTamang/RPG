@@ -3,6 +3,7 @@ using TMPro;
 public class StatsManager : MonoBehaviour
 {
     public static StatsManager Instance; // Static instance for global access to the StatsManager
+    public StatsUI statsUI; // Reference to the StatsUI component for updating the UI
     public TMP_Text healthText; // Reference to the UI Text component for displaying health
 
     [Header("Combat Stats")]
@@ -13,7 +14,7 @@ public class StatsManager : MonoBehaviour
     public float stunTime;
 
     [Header("Movement Stats")]
-    public float moveSpeed; 
+    public float moveSpeed;
     [Header("Health Stats")]
     public int maxHealth;
     public int currentHealth;
@@ -33,7 +34,18 @@ public class StatsManager : MonoBehaviour
     {
         maxHealth += amount;
         healthText.text = "HP: " + currentHealth + "/ " + maxHealth; // Update the health text to display the current health and maximum health
+        statsUI.UpdateAllStats(); // Update the health UI through the StatsUI component
     }
-
-
+    public void UpdateHealth(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth; // Ensure current health does not exceed maximum health
+        healthText.text = "HP: " + currentHealth + "/ " + maxHealth; // Update the health text to display the current health and maximum health
+    }
+    public void UpdateSpeed(int amount)
+    {
+        moveSpeed += amount;
+        statsUI.UpdateAllStats(); // Update the speed UI through the StatsUI component
+    }
 }

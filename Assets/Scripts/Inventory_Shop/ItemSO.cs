@@ -8,9 +8,14 @@ public class ItemSO : ScriptableObject
     public Sprite itemIcon; // Icon representing the item in the UI
 
     public bool isGold;
-    public int currenHealth;
+    public int stackLimit = 10;
+
+    [Header("Stats")]
+    public int currentHealth;
     public int maxHealth;
     public int moveSpeed;
     public int damage;
 
+    [Header("Temporary Effects")]
+    public float duration;
 } 
