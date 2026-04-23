@@ -103,13 +103,13 @@ TextureImporter:
       name: Button_Hover_9Slides_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 15
-        width: 181
-        height: 177
+        x: 3
+        y: 5
+        width: 184
+        height: 187
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 36, y: 50, z: 39, w: 39}
       customData: 
       outline: []
       physicsShape: []
