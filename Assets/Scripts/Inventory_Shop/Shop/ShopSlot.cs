@@ -2,16 +2,21 @@ using TMPro;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
-public class ShopSlot : MonoBehaviour
+public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     public ItemSO itemSO;
     public TMP_Text itemNameText;
     public TMP_Text priceText;
     public Image itemImage;
 
-    private int price;
+    [SerializeField] private ShopManager shopManager;
+    [SerializeField] private ShopInfo shopInfo;
+
+    public int price;
 
     public void Initialize(ItemSO newItemSO, int price)
     {
@@ -20,5 +25,27 @@ public class ShopSlot : MonoBehaviour
         itemNameText.text = itemSO.itemName;
         this.price = price;
         priceText.text = price.ToString();
+    }
+
+    public void OnBuyButtonClicked()
+    {
+        shopManager.TryBuyItem(itemSO, price);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(itemSO != null)
+            shopInfo.ShowItemInfo(itemSO);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        shopInfo.HideItemInfo();
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (itemSO != null)
+            shopInfo.FollowMouse();
     }
 }

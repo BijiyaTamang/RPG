@@ -1,28 +1,68 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] private List<ShopItems> shopItems;
 
     [SerializeField] private ShopSlot[] shopSlots;
 
-    private void Start()
-    {
-        PopulateShopItems();
-    }
-    public void PopulateShopItems()
+    [SerializeField] private InventoryManager inventoryManager;
+
+    public void PopulateShopItems(List<ShopItems> shopItems)
             {
         for (int i = 0; i < shopItems.Count && i<shopSlots.Length; i++)
         {
-            ShopItems shopItems = this.shopItems[i];
-            shopSlots[i].Initialize(shopItems.itemSO, shopItems.price);
+            ShopItems shopItem =shopItems[i];
+            shopSlots[i].Initialize(shopItem.itemSO, shopItem.price);
             shopSlots[i].gameObject.SetActive(true);
         }
         for (int i = shopItems.Count; i< shopSlots.Length; i++)
         {
             shopSlots[i].gameObject.SetActive(false);
+        }
+    }
+    public void TryBuyItem(ItemSO itemSO, int price)
+    {
+        if(itemSO != null && inventoryManager.gold >= price)
+        {
+            if (HasSpaceForItem(itemSO))
+            {
+                inventoryManager.gold -= price;
+                inventoryManager.goldText.text = inventoryManager.gold.ToString();
+                inventoryManager.AddItem(itemSO, 1);
+            }
+        }
+    }
+    private bool HasSpaceForItem(ItemSO itemSO)
+    {
+        foreach (var slot in inventoryManager.itemSlots)
+        {
+            if (slot.itemSO == itemSO && slot.quantity < itemSO.stackLimit)
+            {
+                return true;
+            }
+            else if(slot.itemSO == null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void SellItem(ItemSO itemSO)
+    {
+        if (itemSO == null)
+        { return; }
+        foreach (var slot in shopSlots)
+        {
+            if (slot.itemSO == itemSO)
+            {
+                inventoryManager.gold += slot.price;
+                inventoryManager.goldText.text = inventoryManager.gold.ToString();
+                return;
+            }
         }
     }
 }
