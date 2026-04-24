@@ -11,6 +11,7 @@ public class Loot : MonoBehaviour
     public int quantity;
     public static event Action<ItemSO, int> OnLootPickUp;
 
+
     private void OnValidate()
     {
         if (itemSO != null)
@@ -32,6 +33,7 @@ public class Loot : MonoBehaviour
     {
         if (collision.CompareTag("Player") && canBePickedUp == true)
         {
+            Debug.Log("Picked up: " + itemSO.itemName + " | CanPickUp: " + canBePickedUp + " | Collision: " + collision.gameObject.name, gameObject);
             anim.Play("LootPickUp");
             OnLootPickUp?.Invoke(itemSO, quantity);
             Destroy(gameObject, 0.5f);

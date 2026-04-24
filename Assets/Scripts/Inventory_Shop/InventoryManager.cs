@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
         {
             slot.UpdateUI();
         }
+        goldText.text = gold.ToString();
     }
     private void OnEnable()
     {
@@ -26,7 +27,13 @@ public class InventoryManager : MonoBehaviour
     }
     public void AddItem(ItemSO itemSO, int quantity)
     {
-        if(itemSO.isGold)
+        if (itemSO == null)
+        {
+            Debug.LogWarning("AddItem called with null ItemSO! " + System.Environment.StackTrace);
+            return;
+        }
+        Debug.Log("AddItem called: " + itemSO.itemName + " x" + quantity + "\n" + System.Environment.StackTrace);
+        if (itemSO.isGold)
         {
             gold += quantity;
             goldText.text = gold.ToString();

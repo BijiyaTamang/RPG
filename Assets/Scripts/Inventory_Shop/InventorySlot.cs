@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 using System;
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
-    public ItemSO itemSO;
-    public int quantity;
+    [NonSerialized] public ItemSO itemSO;
+    [NonSerialized] public int quantity;
 
     public Image itemImage;
     public TMP_Text quantityText;

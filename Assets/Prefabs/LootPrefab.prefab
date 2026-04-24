@@ -87,6 +87,7 @@ MonoBehaviour:
   itemSO: {fileID: 11400000, guid: 6d2d5310db211c743a115c65d2b5a7ee, type: 2}
   sr: {fileID: 2029669903444199666}
   anim: {fileID: 3566503832037156586}
+  canBePickedUp: 1
   quantity: 1
 --- !u!95 &3566503832037156586
 Animator:
