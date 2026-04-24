@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a7403ba8b04911440965d1aaaf816de8
+guid: f95971df873190c4cbce05adbd6a5d31
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6613379649801886385
-    second: Button_Disable_0
+      213: -1611135627137491982
+    second: Banner_Horizontal_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Button_Disable_0
+      name: Banner_Horizontal_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 7
-        width: 52
-        height: 54
+        x: 32
+        y: 21
+        width: 128
+        height: 125
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 20, z: 15, w: 14}
+      border: {x: 28, y: 36, z: 32, w: 14}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f45e2c86f3e8834a0800000000000000
-      internalID: -6613379649801886385
+      spriteID: 2fb5e7beea814a9e0800000000000000
+      internalID: -1611135627137491982
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 413f68b4021687b4f9fbb465abc78892
+    spriteID: c9a292220a63f2845906cef13046b3e4
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Button_Disable_0: -6613379649801886385
+      Banner_Horizontal_0: -1611135627137491982
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
