@@ -3,12 +3,27 @@ using TMPro;
 using System.Collections;
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager Instance;
+
     public InventorySlot[] itemSlots;
     public UseItem useItem;
     public int gold;
     public TMP_Text goldText;
     public GameObject lootPrefab;
     public Transform player;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     private void Start()
     {
         foreach(var slot in itemSlots)
@@ -102,5 +117,15 @@ public class InventoryManager : MonoBehaviour
             }
             slot.UpdateUI();
         }
+    }
+
+    public bool HasItem(ItemSO itemSO)
+    {
+        foreach(var slot in itemSlots)
+        {
+            if(slot.itemSO == itemSO && slot.quantity > 0) 
+                return true;
+        }
+        return false;
     }
 }

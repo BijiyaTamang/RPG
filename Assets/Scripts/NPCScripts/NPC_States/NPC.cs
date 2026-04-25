@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class NPC : MonoBehaviour
 {
     public enum NPCState { Default, Idle, Patrol, Wander, Talk}
-    public NPCState currentState = NPCState.Wander;
+    public NPCState currentState = NPCState.Patrol;
     private NPCState defaultState;  
 
     public NPC_Patrol patrol;

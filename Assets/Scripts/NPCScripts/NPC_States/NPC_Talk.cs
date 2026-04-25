@@ -1,11 +1,15 @@
 using UnityEngine;
 using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 public class NPC_Talk : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
     public Animator interactAnim;
-    public DialogueSO dialogueSO;
+
+    public List<DialogueSO> conversations;
+    public DialogueSO currentConversation;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -30,13 +34,46 @@ public class NPC_Talk : MonoBehaviour
     {
         if(Input.GetButtonDown("NPC"))
         {
-            if (DialogueManager.Instance.isDialogueActive)
+            if (GameManager.Instance.DialogueManager.isDialogueActive)
             {
-                DialogueManager.Instance.AdvanceDialogue();
+                GameManager.Instance.DialogueManager.AdvanceDialogue();
             }
             else
             {
-                DialogueManager.Instance.StartDialogue(dialogueSO);
+                if (!GameManager.Instance.DialogueManager.CanStartDialogue())
+                {
+                    CheckForNewConversation();
+                    GameManager.Instance.DialogueManager.StartDialogue(currentConversation);
+
+                }
+            }
+        }
+    }
+
+    private void CheckForNewConversation()
+    {
+        for (int i = 0; i < conversations.Count; i++)
+        {
+            var convo = conversations[i];
+            if(convo != null && convo.IsConditionMet())
+            {
+                currentConversation = convo;
+
+                // remove one time convo
+
+                if(convo.removeAfterComplete)
+                    conversations.RemoveAt(i);
+
+                // remove if quest complete.
+                if(convo.removeTheseOnComplete!= null && convo.removeTheseOnComplete.Count > 0)
+                {
+                    foreach (var toRemove in convo.removeTheseOnComplete)
+                    {
+                        conversations.Remove(toRemove);
+                    }
+                }
+                currentConversation = convo;
+                break;
             }
         }
     }
