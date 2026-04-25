@@ -21,4 +21,12 @@ public class ShopButtonToggle : MonoBehaviour
             ShopKeeper.currentShopKeeper.OpenArmourShop();
         }
     }
+
+    public void CloseShop()
+    {
+        if (ShopKeeper.currentShopKeeper != null)
+        {
+            ShopKeeper.currentShopKeeper.CloseShop();
+        }
+    }
 }

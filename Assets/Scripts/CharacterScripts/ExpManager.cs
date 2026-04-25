@@ -26,10 +26,13 @@ public class ExpManager : MonoBehaviour
     private void OnEnable()
     {
         EnemyHealth.OnEnemyDeath += GainExperience; // Subscribe the GainExperience method to the OnEnemyDeath event when the script is enabled
+        InventoryManager.OnExperienceGained += GainExperience;
     }
     private void OnDisable()
     {
         EnemyHealth.OnEnemyDeath -= GainExperience; // Unsubscribe the GainExperience method from the OnEnemyDeath event when the script is disabled to prevent memory leaks
+        InventoryManager.OnExperienceGained -= GainExperience;
+
     }
     public void GainExperience(int amount)
     {

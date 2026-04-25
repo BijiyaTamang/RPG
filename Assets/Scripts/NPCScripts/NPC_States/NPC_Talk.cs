@@ -16,6 +16,17 @@ public class NPC_Talk : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
     }
 
+    private void Start()
+    {
+        QuestEvents.OnQuestAccepted += OnQuestAccepted_RemovedOfferings;
+    }
+
+    private void OnDestroy()
+    {
+        QuestEvents.OnQuestAccepted -= OnQuestAccepted_RemovedOfferings;
+
+    }
+
     private void OnEnable()
     {
         rb.linearVelocity = Vector2.zero;
@@ -77,4 +88,20 @@ public class NPC_Talk : MonoBehaviour
             }
         }
     }
+
+    private void OnQuestAccepted_RemovedOfferings(QuestSO accceptedQuest)
+    {
+        for (int i = conversations.Count - 1; i >= 0; i--)
+        {
+            var convo = conversations[i];
+            if(convo == null)
+                continue;
+
+            if (convo.offerQuestOnEnd == accceptedQuest)
+                conversations.RemoveAt(i);
+
+    
+        }
+    }
+
 }

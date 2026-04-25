@@ -8,6 +8,7 @@ public class ItemSO : ScriptableObject
     public Sprite itemIcon; // Icon representing the item in the UI
 
     public bool isGold;
+    public bool isExp;
     public int stackLimit = 10;
 
     [Header("Stats")]

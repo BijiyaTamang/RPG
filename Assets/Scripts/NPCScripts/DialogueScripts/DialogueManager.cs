@@ -75,31 +75,42 @@ public class DialogueManager : MonoBehaviour
 
     private void ShowChoices()
     {
-        isShowingChoices = true;
-        Debug.Log("ShowChoices called. Button count: " + choiceButtons.Length + " Options: " + currentDialogue.options.Length);
         ClearChoices();
         if (currentDialogue.options.Length > 0)
         {
             for (int i = 0; i < currentDialogue.options.Length; i++)
             {
-                if (i >= choiceButtons.Length)
-                {
-                    Debug.LogWarning("Not enough buttons for options!");
-                    break;
-                }
-                int capturedIndex = i;
-                choiceButtons[i].GetComponentInChildren<TMP_Text>().text = currentDialogue.options[i].optionText;
+                var option = currentDialogue.options[i];
+                choiceButtons[i].GetComponentInChildren<TMP_Text>().text = option.optionText;
                 choiceButtons[i].gameObject.SetActive(true);
-                choiceButtons[i].onClick.AddListener(() => ChooseOption(currentDialogue.options[capturedIndex].nextDialogue));
+                choiceButtons[i].onClick.AddListener(() => ChooseOption(option.nextDialogue));
             }
+            EventSystem.current.SetSelectedGameObject(choiceButtons[0].gameObject);
+
         }
         else
         {
-            choiceButtons[0].GetComponentInChildren<TMP_Text>().text = "End";
-            choiceButtons[0].onClick.AddListener(EndDialogue);
-            choiceButtons[0].gameObject.SetActive(true);
+            if(currentDialogue.turnInQuestOnEnd != null && 
+                GameManager.Instance.QuestManager.IsQuestComplete(currentDialogue.turnInQuestOnEnd))
+            {
+                QuestEvents.OnQuestTurnInRequested?.Invoke(currentDialogue.turnInQuestOnEnd);
+                EndDialogue();
+            }
+            else if(currentDialogue.offerQuestOnEnd != null)
+            {
+                EndDialogue();
+                QuestEvents.OnQuestOfferRequested?.Invoke(currentDialogue.offerQuestOnEnd);
+            }
+            else
+            {
+                choiceButtons[0].GetComponentInChildren<TMP_Text>().text = "End";
+                choiceButtons[0].onClick.AddListener(EndDialogue);
+                choiceButtons[0].gameObject.SetActive(true);
+
+                EventSystem.current.SetSelectedGameObject(choiceButtons[0].gameObject);
+
+            }
         }
-        EventSystem.current.SetSelectedGameObject(choiceButtons[0].gameObject);
     }
 
     private void ChooseOption(DialogueSO dialogueSO)

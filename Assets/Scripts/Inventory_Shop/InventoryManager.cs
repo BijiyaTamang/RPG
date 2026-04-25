@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using System.Collections;
+using System;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject lootPrefab;
     public Transform player;
 
+    public static event Action<int> OnExperienceGained;
     private void Awake()
     {
         if(Instance == null)
@@ -42,16 +43,15 @@ public class InventoryManager : MonoBehaviour
     }
     public void AddItem(ItemSO itemSO, int quantity)
     {
-        if (itemSO == null)
-        {
-            Debug.LogWarning("AddItem called with null ItemSO! " + System.Environment.StackTrace);
-            return;
-        }
-        Debug.Log("AddItem called: " + itemSO.itemName + " x" + quantity + "\n" + System.Environment.StackTrace);
         if (itemSO.isGold)
         {
             gold += quantity;
             goldText.text = gold.ToString();
+            return;
+        }
+        if (itemSO.isExp)
+        {
+            OnExperienceGained?.Invoke(quantity);
             return;
         }
         foreach (var slot in itemSlots)
@@ -63,7 +63,7 @@ public class InventoryManager : MonoBehaviour
 
                 slot.quantity += amountToAdd;
                 quantity -= amountToAdd;
-                slot.UpdateUI();
+                slot.UpdateUI();    
 
                 if(quantity <= 0)
                     return;
@@ -85,19 +85,46 @@ public class InventoryManager : MonoBehaviour
             DropLoot(itemSO, quantity);
         }
     }
-    public void DropLoot(InventorySlot slot)
+
+    public void RemoveItem(ItemSO itemSO, int quantity)
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            var slot = itemSlots[i];
+
+            if (slot.itemSO != itemSO)
+                continue;
+            if(slot.quantity > quantity)
+            {
+                slot.quantity -= quantity;   
+                slot.UpdateUI();
+                quantity = 0;
+
+            }
+            else
+            {
+                quantity -= slot.quantity;
+                slot.itemSO = null;
+                slot.quantity = 0;
+                slot.UpdateUI();
+            }
+        }
+
+    }
+    public void DropItem(InventorySlot slot)
     {
         if (slot.itemSO != null && slot.quantity > 0)
         {
             DropLoot(slot.itemSO, 1);
             slot.quantity--;
-            if(slot.quantity <= 0)
+            if (slot.quantity <= 0)
             {
                 slot.itemSO = null;
             }
             slot.UpdateUI();
         }
     }
+
     private void DropLoot(ItemSO itemSO, int quantity)
     {
         Loot loot = Instantiate(lootPrefab, player.position, Quaternion.identity).GetComponent<Loot>();
@@ -127,5 +154,18 @@ public class InventoryManager : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public int GetItemQuantity(ItemSO itemSO)
+    {
+        int total = 0;
+
+        foreach (var slot in itemSlots)
+        {
+            if (slot.itemSO == itemSO)
+                total += slot.quantity;
+        }
+
+        return total;
     }
 }

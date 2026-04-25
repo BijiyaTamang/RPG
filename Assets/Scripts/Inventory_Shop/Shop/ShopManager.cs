@@ -64,6 +64,14 @@ public class ShopManager : MonoBehaviour
                 return;
             }
         }
+ 
+    }
+    public void CloseShop()
+    {
+        if (ShopKeeper.currentShopKeeper != null)
+        {
+            ShopKeeper.currentShopKeeper.CloseShop();
+        }
     }
 }
 

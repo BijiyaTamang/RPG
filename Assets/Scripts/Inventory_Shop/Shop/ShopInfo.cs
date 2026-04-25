@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System;
 
 public class ShopInfo : MonoBehaviour
 {
@@ -64,4 +65,5 @@ public class ShopInfo : MonoBehaviour
 
         infoPanelRect.position = mousePosition + offset;
     }
+
 }

@@ -67,6 +67,16 @@ public class ShopKeeper : MonoBehaviour
     {
         shopManager.PopulateShopItems(shopArmour);
     }
+    public void CloseShop()
+    {
+        Time.timeScale = 1;
+        currentShopKeeper = null;
+        isShopOpen = false;
+        OnShopStateChanged?.Invoke(shopManager, false);
+        shopCanvasGroup.alpha = 0;
+        shopCanvasGroup.interactable = false;
+        shopCanvasGroup.blocksRaycasts = false;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
