@@ -45,7 +45,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (itemSO.isGold)
         {
-            gold += quantity;
+            gold += itemSO.goldAmount > 0 ? itemSO.goldAmount : quantity;
             goldText.text = gold.ToString();
             return;
         }

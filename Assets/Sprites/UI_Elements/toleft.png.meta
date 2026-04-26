@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 38a3d3149ed4a6e4b9d318dc78ecbb61
+guid: fbc8ff01dcb40ab448f378fb840f68e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2487004928176385316
-    second: Celestial Dew Bottle_0
+      213: 3735296799778883953
+    second: toleft_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Celestial Dew Bottle_0
+      name: toleft_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1
-        width: 32
-        height: 30
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cd2966dc1326c7dd0800000000000000
-      internalID: -2487004928176385316
+      spriteID: 179497126a076d330800000000000000
+      internalID: 3735296799778883953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toleft_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ebb138ed17b4874eb7f10bfd5a902fa
+      internalID: 238977879
       vertices: []
       indices: 
       edges: []
@@ -125,7 +147,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c2a90d8848e61f0459d1a4fda55dab92
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +155,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Celestial Dew Bottle_0: -2487004928176385316
+      toleft_0: 3735296799778883953
+      toleft_1: 238977879
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

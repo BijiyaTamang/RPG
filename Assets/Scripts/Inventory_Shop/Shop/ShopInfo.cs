@@ -29,7 +29,10 @@ public class ShopInfo : MonoBehaviour
         if (itemSO.currentHealth > 0) stats.Add("Health: " + itemSO.currentHealth.ToString());
         if (itemSO.damage > 0) stats.Add("Damage: " + itemSO.damage.ToString());
         if (itemSO.moveSpeed > 0) stats.Add("Speed: " + itemSO.moveSpeed.ToString());
-        if (itemSO.duration > 0) stats.Add("Health: " + itemSO.duration.ToString());
+        if (itemSO.duration > 0) stats.Add("Duration: " + itemSO.duration.ToString());
+        if (itemSO.arrowDamage > 0) stats.Add("Arrow Damage: " + itemSO.arrowDamage.ToString());
+        if (itemSO.arrowSpeed > 0) stats.Add("Arrow Speed: " + itemSO.arrowSpeed.ToString());
+
 
         if (stats.Count <= 0)
             return;
