@@ -3,27 +3,33 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     public int expReward = 3;
-    public delegate void EnemyDeath(int exp); // Define a delegate type for the monster death event, which takes an integer parameter for experience reward
-   public static event EnemyDeath OnEnemyDeath; // Declare a static event of the MonsterDeath delegate type
+    public delegate void EnemyDeath(int exp);
+    public static event EnemyDeath OnEnemyDeath;
     public int currentHealth;
     public int maxHealth;
+
     private void Start()
     {
-        currentHealth = maxHealth; // Initialize current health to maximum health at the start
+        currentHealth = maxHealth;
     }
+
     public void ChangeHealth(int amount)
     {
-        currentHealth += amount; // Change the current health by the specified amount (positive or negative)
+        currentHealth += amount;
         if (currentHealth > maxHealth)
         {
-            currentHealth = maxHealth; // Ensure current health does not exceed maximum health
+            currentHealth = maxHealth;
         }
-        else if(currentHealth <= 0)
+        else if (currentHealth <= 0)
         {
-            OnEnemyDeath(expReward); // Trigger the OnEnemyDeath event, passing the experience reward as an argument
-            Destroy(gameObject); // Destroy the enemy GameObject if current health drops to zero or below
+            currentHealth = 0;
+            OnEnemyDeath?.Invoke(expReward);
+            GetComponent<EnemyRespawn>().Die(); // Call respawn instead of Destroy
         }
-
     }
 
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+    }
 }
