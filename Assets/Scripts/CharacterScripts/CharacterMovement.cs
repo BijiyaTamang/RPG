@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -9,14 +10,19 @@ public class CharacterMovement : MonoBehaviour
     private bool isKnockbacked; // Flag to indicate if the enemy is currently being knocked back
     public bool isShooting;
     public CharacterCombat characterCombat; // Reference to the CharacterCombat script to access attack functionality
+    public CharacterBow bow; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     // Update is called 50x frame
+
     private void Update()
     {
-        if (Input.GetButtonDown("Slash")) // Check if the space key is pressed to trigger an attack
+        if (Input.GetButtonDown("Slash"))
         {
-            characterCombat.Attack(); // Call the Attack method from the CharacterCombat script to trigger the attack animation
+            if (!bow.enabled) // only allow melee when bow is NOT active
+            {
+                characterCombat.Attack();
+            }
         }
     }
     void FixedUpdate()

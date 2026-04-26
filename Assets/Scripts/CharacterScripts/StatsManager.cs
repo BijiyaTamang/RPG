@@ -13,6 +13,7 @@ public class StatsManager : MonoBehaviour
     public float knockbackDuration;
     public float stunTime;
 
+
     [Header("Movement Stats")]
     public float moveSpeed;
     [Header("Health Stats")]
@@ -43,9 +44,36 @@ public class StatsManager : MonoBehaviour
             currentHealth = maxHealth; // Ensure current health does not exceed maximum health
         healthText.text = "HP: " + currentHealth + "/ " + maxHealth; // Update the health text to display the current health and maximum health
     }
-    public void UpdateSpeed(int amount)
+    public void UpdateSpeed(float amount)
     {
         moveSpeed += amount;
         statsUI.UpdateAllStats(); // Update the speed UI through the StatsUI component
+    }
+    public void UpdateDamage(int amount)
+    {
+        damage += amount;
+        statsUI.UpdateAllStats();
+    }
+    [Header("Arrow Stats")]
+    public int arrowDamage;
+    public float arrowSpeed;
+    public float arrowStunTime;
+
+    public void UpdateArrowDamage(int amount)
+    {
+        arrowDamage += amount;
+        statsUI.UpdateAllStats();
+    }
+
+    public void UpdateArrowSpeed(float amount)
+    {
+        arrowSpeed += amount;
+        statsUI.UpdateAllStats();
+    }
+
+    public void UpdateArrowStun(float amount)
+    {
+        arrowStunTime += amount;
+        statsUI.UpdateAllStats();
     }
 }

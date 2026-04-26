@@ -49,12 +49,14 @@ public class CharacterBow : MonoBehaviour
     {
         if (shootTimer <= 0)
         {
-            // Calculate the angle based on the input
             Arrow arrow = Instantiate(arrowPrefab, launchPoint.position, Quaternion.identity).GetComponent<Arrow>();
             arrow.direction = shootDirection;
-            shootTimer = shootCooldown; // Reset the shoot timer to enforce the cooldown between shots
+            arrow.damage = StatsManager.Instance.arrowDamage;       // read from StatsManager
+            arrow.speed = StatsManager.Instance.arrowSpeed;         // read from StatsManager
+            arrow.stunTime = StatsManager.Instance.arrowStunTime;   // read from StatsManager
+            shootTimer = shootCooldown;
         }
-        anim.SetBool("isShooting", false); // Reset the shooting animation state after shooting
-        characterMovement.isShooting = false; // Reset the isShooting flag in the CharacterMovement script to false to allow movement after shooting
+        anim.SetBool("isShooting", false);
+        characterMovement.isShooting = false;
     }
 }

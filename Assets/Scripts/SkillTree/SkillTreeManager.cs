@@ -8,6 +8,15 @@ public class SkillTreeManager : MonoBehaviour
     public TMP_Text skillLevelText;
     public int availableSkillPoints;
 
+    private void Awake()
+    {
+        ExpManager.OnKill += UpdateAbilityPoints; // subscribe here so it works even when UI is hidden
+    }
+
+    private void OnDestroy()
+    {
+        ExpManager.OnKill -= UpdateAbilityPoints; // unsubscribe on destroy instead
+    }
     private void OnEnable()
     {
         SkillSlot.OnSkillUpgraded += HandleAbilityUpgrade; // Subscribe to the skill upgrade event

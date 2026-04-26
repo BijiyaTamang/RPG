@@ -12,6 +12,7 @@ public class ExpManager : MonoBehaviour
     public TMP_Text currentLevelText; // Reference to the UI Text component for displaying the current level
 
     public static event Action<int> OnLevelUp; // Event to notify when the character levels up, passing the new level as an argument
+    public static event Action<int> OnKill;
     private void Start()
     {
         UpdateExpUI(); // Call the UpdateExpUI method to initialize the experience UI elements
@@ -36,19 +37,20 @@ public class ExpManager : MonoBehaviour
     }
     public void GainExperience(int amount)
     {
-        currentExp += amount; // Increase the current experience by the specified amount
-        if (currentExp >= expToLevel) // Check if the current experience has reached or exceeded the threshold for leveling up
+        OnKill?.Invoke(1); // 1 skill point per kill
+        currentExp += amount;
+        if (currentExp >= expToLevel)
         {
-            LevelUp(); // Call the LevelUp method to handle the leveling up process
+            LevelUp();
         }
-        UpdateExpUI(); // Call the UpdateExpUI method to update the experience UI elements after gaining experience
-    }   
+        UpdateExpUI();
+    }
     private void LevelUp()
     {
-        level++; // Increase the character's level by 1
-        currentExp -= expToLevel; // Subtract the experience required for leveling up from the current experience
-        expToLevel = Mathf.RoundToInt(expToLevel * expGrowthMultiplier); // Increase the experience required for the next level by 5
-        OnLevelUp?.Invoke(1); // Invoke the OnLevelUp event to notify subscribers that the character has leveled up, passing the new level as an argument
+        level++;
+        currentExp -= expToLevel;
+        expToLevel = Mathf.RoundToInt(expToLevel * expGrowthMultiplier);
+        OnLevelUp?.Invoke(1);
     }
     public void UpdateExpUI()
     {

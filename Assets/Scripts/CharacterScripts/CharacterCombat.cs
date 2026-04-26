@@ -15,6 +15,7 @@ public class CharacterCombat : MonoBehaviour
         {   timer -= Time.deltaTime; // Decrease the timer by the time elapsed since the last frame
         }
     }
+
     public void Attack()
     {
         if (!enabled) return; // block calls if component is disabled

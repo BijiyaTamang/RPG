@@ -1,12 +1,10 @@
 using TMPro;
 using UnityEngine;
-
 public class StatsUI : MonoBehaviour
 {
     public GameObject[] statsSlots;
-    public CanvasGroup statsCanvas; // Reference to the CanvasGroup component for controlling the visibility of the stats UI
-    private bool statsOpen = false; // Variable to track whether the stats UI is currently open or closed
-
+    public CanvasGroup statsCanvas;
+    private bool statsOpen = false;
     private void Start()
     {
         UpdateAllStats();
@@ -16,35 +14,35 @@ public class StatsUI : MonoBehaviour
         if (Input.GetButtonDown("ToggleStats"))
             if (statsOpen)
             {
-                Time.timeScale = 1; // Resume the game by setting the time scale back to 1
-                UpdateAllStats(); // Update all stats displays to ensure they show the latest values when the stats UI is closed
-                statsCanvas.alpha = 0; // Set the alpha of the CanvasGroup to 0 to make the stats UI invisible
-                statsCanvas.blocksRaycasts = false; // Disable raycasts on the CanvasGroup to prevent interaction with the stats UI when it's closed
+                Time.timeScale = 1;
+                UpdateAllStats();
+                statsCanvas.alpha = 0;
+                statsCanvas.blocksRaycasts = false;
                 statsOpen = false;
             }
             else
             {
-                Time.timeScale = 0; // Pause the game by setting the time scale to 0
-                UpdateAllStats(); // Update all stats displays to ensure they show the latest values when the stats UI is opened
-                statsCanvas.alpha = 1; // Set the alpha of the CanvasGroup to 1 to make the stats UI visible
-                statsCanvas.blocksRaycasts = true; // Enable raycasts on the CanvasGroup to allow interaction with the stats UI when it's opened
+                Time.timeScale = 0;
+                UpdateAllStats();
+                statsCanvas.alpha = 1;
+                statsCanvas.blocksRaycasts = true;
                 statsOpen = true;
             }
     }
     public void UpdateDamage()
     {
-        statsSlots[0].GetComponentInChildren<TMP_Text>().text = "Damage: " + StatsManager.Instance.damage.ToString(); 
-        // Update the text of the first stats slot to display the current damage value from the StatsManager
+        statsSlots[0].GetComponentInChildren<TMP_Text>().text = "Knight Damage: " + StatsManager.Instance.damage.ToString();
     }
     public void UpdateSpeed()
     {
         statsSlots[1].GetComponentInChildren<TMP_Text>().text = "Speed: " + StatsManager.Instance.moveSpeed.ToString();
-        // Update the text of the first stats slot to display the current damage value from the StatsManager
     }
     public void UpdateAllStats()
-    {  
-        UpdateDamage(); // Call the method to update the damage stat display
-        UpdateSpeed(); // Call the method to update the speed stat display
+    {
+        UpdateDamage();
+        UpdateSpeed();
+        statsSlots[2].GetComponentInChildren<TMP_Text>().text = "Archer Damage: " + StatsManager.Instance.arrowDamage.ToString();
+        statsSlots[3].GetComponentInChildren<TMP_Text>().text = "Bow Speed: " + StatsManager.Instance.arrowSpeed.ToString();
+        statsSlots[4].GetComponentInChildren<TMP_Text>().text = "Bow Stun: " + StatsManager.Instance.arrowStunTime.ToString();
     }
-
 }
