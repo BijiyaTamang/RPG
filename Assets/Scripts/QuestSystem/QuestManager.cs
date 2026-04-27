@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -19,9 +18,7 @@ public class QuestManager : MonoBehaviour
     {
         return questProgress.ContainsKey(questSO);
     }
-
-
-    public List<QuestSO>  GetActiveQuests()
+    public List<QuestSO> GetActiveQuests()
     {
         return new List<QuestSO>(questProgress.Keys);
     }
@@ -49,32 +46,26 @@ public class QuestManager : MonoBehaviour
         }
         return true;
     }
-
-
     public void CompleteQuest(QuestSO questSO)
     {
         questProgress.Remove(questSO);
         completedQuests.Add(questSO);
-        foreach(var objective in questSO.objectives)
+        foreach (var objective in questSO.objectives)
         {
-            if(objective.targetItem != null && objective.requiredAmount > 0)
+            if (objective.targetItem != null && objective.requiredAmount > 0)
             {
-                InventoryManager.Instance.RemoveItem(objective.targetItem,objective.requiredAmount);
+                InventoryManager.Instance.RemoveItem(objective.targetItem, objective.requiredAmount);
             }
-
         }
-
         foreach (var reward in questSO.rewards)
         {
             InventoryManager.Instance.AddItem(reward.itemSO, reward.quantity);
         }
     }
-
     public bool GetCompleteQuest(QuestSO questSO)
     {
         return completedQuests.Contains(questSO);
     }
-
     public void UpdateObjectiveProgress(QuestSO questSO, QuestObjective objective)
     {
         if (!questProgress.ContainsKey(questSO))
@@ -116,5 +107,4 @@ public class QuestManager : MonoBehaviour
     {
         throw new NotImplementedException();
     }
-
 }

@@ -90,13 +90,13 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            if(currentDialogue.turnInQuestOnEnd != null && 
+            if (currentDialogue.turnInQuestOnEnd != null &&
                 GameManager.Instance.QuestManager.IsQuestComplete(currentDialogue.turnInQuestOnEnd))
             {
                 QuestEvents.OnQuestTurnInRequested?.Invoke(currentDialogue.turnInQuestOnEnd);
                 EndDialogue();
             }
-            else if(currentDialogue.offerQuestOnEnd != null)
+            else if (currentDialogue.offerQuestOnEnd != null)
             {
                 EndDialogue();
                 QuestEvents.OnQuestOfferRequested?.Invoke(currentDialogue.offerQuestOnEnd);

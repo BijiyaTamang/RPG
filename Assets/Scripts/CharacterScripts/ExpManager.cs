@@ -37,9 +37,9 @@ public class ExpManager : MonoBehaviour
     }
     public void GainExperience(int amount)
     {
-        OnKill?.Invoke(1); // 1 skill point per kill
+        OnKill?.Invoke(1);
         currentExp += amount;
-        if (currentExp >= expToLevel)
+        while (currentExp >= expToLevel) // while instead of if
         {
             LevelUp();
         }

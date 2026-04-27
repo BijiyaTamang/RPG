@@ -86,14 +86,14 @@ public class QuestLogUI : MonoBehaviour
     {
         SetCanvasState(questCanvas, false);
     }
-        // k
+    // k
     public void OnCompletedQuestClicked()
     {
         questManager.CompleteQuest(questSO);
 
         RefreshQuestList();
         HandleQuestClicked(NOQUEST);
-        SetCanvasState(completedCanvasGroup, false);     
+        SetCanvasState(completedCanvasGroup, false);
     }
     private void SetCanvasState(CanvasGroup group, bool activate)
     {
@@ -105,9 +105,9 @@ public class QuestLogUI : MonoBehaviour
     public void RefreshQuestList()
     {
         List<QuestSO> activeQuests = questManager.GetActiveQuests();
-        for(int i = 0; i < questSlots.Length; i++)
+        for (int i = 0; i < questSlots.Length; i++)
         {
-            if(i< activeQuests.Count)
+            if (i < activeQuests.Count)
             {
                 questSlots[i].SetQuest(activeQuests[i]);
             }
@@ -158,7 +158,7 @@ public class QuestLogUI : MonoBehaviour
         {
             if (i < questSO.rewards.Count)
             {
-                var reward = questSO.rewards[i];;
+                var reward = questSO.rewards[i]; ;
                 rewardSlots[i].DisplayReward(reward.itemSO.itemIcon, reward.quantity);
                 rewardSlots[i].gameObject.SetActive(true);
             }
@@ -182,7 +182,6 @@ public class QuestLogUI : MonoBehaviour
 
         SetCanvasState(acceptCanvasGroup, false);
         SetCanvasState(declineCanvasGroup, false);
-        SetCanvasState(completedCanvasGroup, isComplete);
+        SetCanvasState(completedCanvasGroup, false);
     }
 }
-

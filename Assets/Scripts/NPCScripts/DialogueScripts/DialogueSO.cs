@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-
 [CreateAssetMenu(fileName = "DialogueSO", menuName = "Dialogue/DialogueSO")]
 public class DialogueSO : ScriptableObject
 {
@@ -9,23 +8,17 @@ public class DialogueSO : ScriptableObject
     public DialogueOption[] options;
     [Header("Conditional Quest Offer")]
     public QuestSO offerQuestOnEnd;
-
     [Header("Conditional Completed Quest Requirements")]
     public QuestSO[] requiredCompletedQuests;
-
     [Header("Conditional Quest Turn In")]
     public QuestSO turnInQuestOnEnd;
-
     [Header("Conditional Dialogues")]
-
     public ActorSO[] requiredNPCs;
     public LocationSO[] requiredLocations;
     public ItemSO[] requiredItems;
-
     [Header("Control Dialogue Flow")]
     public bool removeAfterComplete;
     public List<DialogueSO> removeTheseOnComplete;
-
     public bool IsConditionMet()
     {
         if (requiredNPCs.Length > 0)
@@ -35,9 +28,7 @@ public class DialogueSO : ScriptableObject
                 if (!GameManager.Instance.DialogueHistoryTracker.HasSpokenWith(npc))
                     return false;
             }
-
         }
-
         if (requiredLocations.Length > 0)
         {
             foreach (var location in requiredLocations)
@@ -45,7 +36,6 @@ public class DialogueSO : ScriptableObject
                 if (!GameManager.Instance.LocationHistoryTracker.HasVisited(location))
                     return false;
             }
-
         }
         if (requiredItems.Length > 0)
         {
@@ -55,32 +45,29 @@ public class DialogueSO : ScriptableObject
                     return false;
             }
         }
-        if(requiredCompletedQuests != null && requiredCompletedQuests.Length >0)
+        if (requiredCompletedQuests != null && requiredCompletedQuests.Length > 0)
         {
             foreach (var quest in requiredCompletedQuests)
             {
                 if (!GameManager.Instance.QuestManager.IsQuestComplete(quest))
                 {
-                    return false;   
+                    return false;
                 }
             }
         }
         return true;
     }
 }
-    [System.Serializable]
-    public class DialogueLine
-    {
-        public ActorSO speaker;
-        [TextArea(3, 5)] public string text;
-    }
-
-    [System.Serializable]
-    public class DialogueOption
-    {
-        public string optionText;
-        public DialogueSO nextDialogue;
-        public QuestSO offerQuest;
-    }
-
-
+[System.Serializable]
+public class DialogueLine
+{
+    public ActorSO speaker;
+    [TextArea(3, 5)] public string text;
+}
+[System.Serializable]
+public class DialogueOption
+{
+    public string optionText;
+    public DialogueSO nextDialogue;
+    public QuestSO offerQuest;
+}
