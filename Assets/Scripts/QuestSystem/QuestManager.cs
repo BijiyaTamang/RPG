@@ -1,28 +1,37 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     private Dictionary<QuestSO, Dictionary<QuestObjective, int>> questProgress = new();
-    private List<QuestSO> completedQuests = new();
+    public List<QuestSO> completedQuests = new();
+    public List<QuestSO> allQuests; // assign all QuestSOs in Inspector
+
     private void OnEnable()
     {
         QuestEvents.IsQuestComplete += IsQuestComplete;
     }
+
     private void OnDisable()
     {
         QuestEvents.IsQuestComplete -= IsQuestComplete;
     }
+
     public bool IsQuestAccepted(QuestSO questSO)
     {
         return questProgress.ContainsKey(questSO);
     }
+
     public List<QuestSO> GetActiveQuests()
     {
         return new List<QuestSO>(questProgress.Keys);
     }
-    // k
+
+    public List<QuestSO> GetCompletedQuests()
+    {
+        return new List<QuestSO>(completedQuests);
+    }
+
     public void AcceptQuest(QuestSO questSO)
     {
         questProgress[questSO] = new Dictionary<QuestObjective, int>();
@@ -31,6 +40,7 @@ public class QuestManager : MonoBehaviour
             UpdateObjectiveProgress(questSO, objective);
         }
     }
+
     public bool IsQuestComplete(QuestSO questSO)
     {
         if (!questProgress.TryGetValue(questSO, out var progressDict))
@@ -46,6 +56,7 @@ public class QuestManager : MonoBehaviour
         }
         return true;
     }
+
     public void CompleteQuest(QuestSO questSO)
     {
         questProgress.Remove(questSO);
@@ -53,19 +64,20 @@ public class QuestManager : MonoBehaviour
         foreach (var objective in questSO.objectives)
         {
             if (objective.targetItem != null && objective.requiredAmount > 0)
-            {
                 InventoryManager.Instance.RemoveItem(objective.targetItem, objective.requiredAmount);
-            }
         }
         foreach (var reward in questSO.rewards)
         {
             InventoryManager.Instance.AddItem(reward.itemSO, reward.quantity);
         }
+        GameManager.Instance.SaveGame(); // save immediately on quest completion
     }
+
     public bool GetCompleteQuest(QuestSO questSO)
     {
         return completedQuests.Contains(questSO);
     }
+
     public void UpdateObjectiveProgress(QuestSO questSO, QuestObjective objective)
     {
         if (!questProgress.ContainsKey(questSO))
@@ -86,6 +98,7 @@ public class QuestManager : MonoBehaviour
         }
         progressDictionary[objective] = newAmount;
     }
+
     public string GetProgressText(QuestSO questSO, QuestObjective objective)
     {
         int currentAmount = GetCurrentAmount(questSO, objective);
@@ -96,6 +109,7 @@ public class QuestManager : MonoBehaviour
         else
             return "In Progress";
     }
+
     public int GetCurrentAmount(QuestSO questSO, QuestObjective objective)
     {
         if (questProgress.TryGetValue(questSO, out var objectiveDictionary))
@@ -103,8 +117,38 @@ public class QuestManager : MonoBehaviour
                 return amount;
         return 0;
     }
-    internal bool IsQuestAccepted(bool v)
+
+    public void LoadQuests(List<string> activeQuestNames, List<string> completedQuestNames)
     {
-        throw new NotImplementedException();
+        questProgress.Clear();
+        completedQuests.Clear();
+
+        Debug.Log("Loading quests. Active: " + activeQuestNames.Count + " Completed: " + completedQuestNames.Count);
+
+        foreach (var quest in allQuests)
+        {
+            if (activeQuestNames.Contains(quest.questName))
+            {
+                questProgress[quest] = new Dictionary<QuestObjective, int>();
+                foreach (var objective in quest.objectives)
+                {
+                    int amount = 0;
+                    if (objective.targetItem != null)
+                        amount = InventoryManager.Instance.GetItemQuantity(objective.targetItem);
+                    else if (objective.targetLocation != null && GameManager.Instance.LocationHistoryTracker.HasVisited(objective.targetLocation))
+                        amount = objective.requiredAmount;
+                    else if (objective.targetNPC != null && GameManager.Instance.DialogueHistoryTracker.HasSpokenWith(objective.targetNPC))
+                        amount = objective.requiredAmount;
+
+                    Debug.Log($"Quest: {quest.questName} | Objective: {objective.description} | Amount: {amount}");
+                    questProgress[quest][objective] = amount;
+                }
+            }
+            else if (completedQuestNames.Contains(quest.questName))
+            {
+                completedQuests.Add(quest);
+                Debug.Log("Restored completed quest: " + quest.questName);
+            }
+        }
     }
 }
