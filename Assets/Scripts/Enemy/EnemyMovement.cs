@@ -30,20 +30,6 @@ public class EnemyMovement : MonoBehaviour
         ChangeState(EnemyState.Idle); // Set the initial state of the enemy to Idle
     }
 
-    void Update()
-    {
-        if (enemyState != EnemyState.Knockback)
-        {
-            if (attackCooldownTimer > 0)
-                attackCooldownTimer -= Time.deltaTime; // Count down the attack cooldown timer
-
-            if (enemyState != EnemyState.Returning)
-                CheckForPlayer(); // Check for the player's presence and update the enemy's state accordingly
-
-            if (enemyState == EnemyState.Attacking)
-                rb.linearVelocity = Vector2.zero; // Stop any velocity to prevent the enemy from moving while attacking
-        }
-    }
 
     void FixedUpdate()
     {
@@ -64,25 +50,75 @@ public class EnemyMovement : MonoBehaviour
         Vector2 direction = (Player.position - transform.position).normalized; // Calculate normalized direction to player
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime); // Move towards player using MovePosition for reliable physics
     }
+    private float returnCooldown = 0.5f;
+    private float returnCooldownTimer = 0f;
 
-    void ReturnToStart()
+    void Update()
     {
-        float distanceToStart = Vector2.Distance(transform.position, startPosition); // Check how far the enemy is from spawn
-
-        if (distanceToStart > 0.1f)
+        if (enemyState != EnemyState.Knockback)
         {
-            if (startPosition.x > transform.position.x && facingDirection == -1 || // Start is to the right but enemy faces left
-                startPosition.x < transform.position.x && facingDirection == 1) // Start is to the left but enemy faces right
-                Flip(); // Flip to face the correct direction while returning
+            if (attackCooldownTimer > 0)
+                attackCooldownTimer -= Time.deltaTime;
 
-            Vector2 direction = ((Vector2)startPosition - (Vector2)transform.position).normalized; // Calculate normalized direction to start position
-            rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime); // Move towards start position using MovePosition
+            if (returnCooldownTimer > 0)
+                returnCooldownTimer -= Time.deltaTime;
+
+            if (enemyState != EnemyState.Returning)
+                CheckForPlayer();
+
+            if (enemyState == EnemyState.Attacking)
+                rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    private void CheckForPlayer()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(detectionPoint.position, playerDetectionRange, playerLayer);
+
+        if (hits.Length > 0)
+        {
+            Player = hits[0].transform;
+            float dist = Vector2.Distance(transform.position, Player.position);
+
+            if (dist < attackRange && attackCooldownTimer <= 0)
+            {
+                attackCooldownTimer = attackCooldown;
+                ChangeState(EnemyState.Attacking);
+            }
+            else if (dist > attackRange && enemyState != EnemyState.Attacking)
+            {
+                ChangeState(EnemyState.Chasing);
+            }
         }
         else
         {
-            transform.position = startPosition; // Snap to exact start position to avoid floating point drift
-            rb.linearVelocity = Vector2.zero; // Stop all movement
-            ChangeState(EnemyState.Idle); // Switch back to Idle once returned to start
+            if (returnCooldownTimer <= 0) // Only return if cooldown expired
+                ChangeState(EnemyState.Returning);
+        }
+    }
+
+    void ReturnToStart()
+    {
+        float distanceToStart = Vector2.Distance(transform.position, startPosition);
+
+        if (distanceToStart > 0.1f)
+        {
+            if (startPosition.x > transform.position.x && facingDirection == -1 ||
+                startPosition.x < transform.position.x && facingDirection == 1)
+                Flip();
+
+            Vector2 direction = ((Vector2)startPosition - (Vector2)transform.position).normalized;
+            rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            transform.position = startPosition;
+            rb.linearVelocity = Vector2.zero;
+            anim.SetBool("isReturning", false);
+            anim.SetBool("isIdle", true);
+            returnCooldownTimer = returnCooldown; // Set cooldown when reaching start
+            enemyState = EnemyState.Returning;
+            ChangeState(EnemyState.Idle);
         }
     }
 
@@ -94,31 +130,6 @@ public class EnemyMovement : MonoBehaviour
             transform.localScale.y,
             transform.localScale.z
         );
-    }
-
-    private void CheckForPlayer()
-    {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(detectionPoint.position, playerDetectionRange, playerLayer); // Check for colliders within detection range
-
-        if (hits.Length > 0) // If the player is detected
-        {
-            Player = hits[0].transform; // Store the player's Transform for tracking
-            float dist = Vector2.Distance(transform.position, Player.position); // Calculate distance to player
-
-            if (dist < attackRange && attackCooldownTimer <= 0) // Player is within attack range and cooldown has expired
-            {
-                attackCooldownTimer = attackCooldown; // Reset the attack cooldown timer
-                ChangeState(EnemyState.Attacking); // Switch to Attacking state
-            }
-            else if (dist > attackRange && enemyState != EnemyState.Attacking) // Player is detected but outside attack range
-            {
-                ChangeState(EnemyState.Chasing); // Switch to Chasing state
-            }
-        }
-        else
-        {
-            ChangeState(EnemyState.Returning); // No player detected, return to start position
-        }
     }
 
     public void ChangeState(EnemyState newState)
