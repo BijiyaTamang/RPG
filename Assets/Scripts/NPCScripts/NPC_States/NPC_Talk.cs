@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 public class NPC_Talk : MonoBehaviour
 {

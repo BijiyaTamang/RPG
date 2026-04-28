@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
     [Header("Managers")]
     public DialogueManager DialogueManager;
     public DialogueHistoryTracker DialogueHistoryTracker;
@@ -18,19 +20,12 @@ public class GameManager : MonoBehaviour
 
     [Header("Save System")]
     public PlayerDataSO playerData;
+
     [Header("Persistent Objects")]
     public GameObject[] persistentObjects;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            QuitGame();
-    }
 
-    public void QuitGame()
-    {
-        SaveGame();          // save before quitting
-        Application.Quit();  // exits the built game
-    }
+    private bool hasLoaded = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -41,13 +36,33 @@ public class GameManager : MonoBehaviour
         Instance = this;
         MarkPersistentObjects();
     }
-    private bool hasLoaded = false;
 
     private void Start()
     {
         if (hasLoaded) return;
         hasLoaded = true;
         LoadGame();
+    }
+
+    // ── INPUT ─────────────────────────────────────────────────
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UIManager uiManager = FindObjectOfType<UIManager>();
+            if (uiManager != null)
+                uiManager.ShowExitCanvas();
+        }
+    }
+
+    public void QuitGame()
+    {
+        SaveGame();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; 
+#else
+    Application.Quit(); // ← works in actual build
+#endif
     }
 
     private void MarkPersistentObjects()
@@ -69,9 +84,14 @@ public class GameManager : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // ── SAVE ──────────────────────────────────────────────────
     public void SaveGame()
     {
-        if (playerData == null) { Debug.LogError("[GameManager] playerData SO is not assigned!"); return; }
+        if (playerData == null)
+        {
+            Debug.LogError("[GameManager] playerData SO is not assigned!");
+            return;
+        }
 
         // Stats
         playerData.damage = StatsManager.damage;
@@ -132,9 +152,10 @@ public class GameManager : MonoBehaviour
         playerData.spokenNPCs = DialogueHistoryTracker.GetSpokenNPCNames();
         playerData.visitedLocations = LocationHistoryTracker.GetVisitedLocationNames();
 
-        // Save NPC dialogue states
+        // NPC dialogue states
         playerData.npcDialogueStates = new List<NPCDialogueData>();
-        var allNPCTalks = FindObjectsByType<NPC_Talk>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var allNPCTalks = FindObjectsByType<NPC_Talk>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var npc in allNPCTalks)
             npc.SaveDialogueState();
 
@@ -142,6 +163,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Game saved.");
     }
 
+    // ── LOAD ──────────────────────────────────────────────────
     public void LoadGame()
     {
         if (!SaveSystem.HasSave())
@@ -149,7 +171,12 @@ public class GameManager : MonoBehaviour
             Debug.Log("[GameManager] No save found, skipping load.");
             return;
         }
-        if (playerData == null) { Debug.LogError("[GameManager] playerData SO is not assigned!"); return; }
+        if (playerData == null)
+        {
+            Debug.LogError("[GameManager] playerData SO is not assigned!");
+            return;
+        }
+
         playerData.LoadFromFile();
 
         // Stats
@@ -191,7 +218,8 @@ public class GameManager : MonoBehaviour
 
         // Inventory
         InventoryManager.gold = playerData.gold;
-        for (int i = 0; i < playerData.inventorySlots.Count && i < InventoryManager.itemSlots.Length; i++)
+        for (int i = 0; i < playerData.inventorySlots.Count
+                     && i < InventoryManager.itemSlots.Length; i++)
         {
             var savedSlot = playerData.inventorySlots[i];
             if (!string.IsNullOrEmpty(savedSlot.itemName))
@@ -208,12 +236,13 @@ public class GameManager : MonoBehaviour
             InventoryManager.itemSlots[i].UpdateUI();
         }
 
-        // NPC Dialogue States — outside inventory loop
-        var allNPCTalks = FindObjectsByType<NPC_Talk>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        // NPC dialogue states
+        var allNPCTalks = FindObjectsByType<NPC_Talk>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var npc in allNPCTalks)
             npc.LoadDialogueState();
 
-        // Dialogue & Location history — load BEFORE quests so objectives evaluate correctly
+        // Dialogue & Location history — load BEFORE quests
         DialogueHistoryTracker.LoadSpokenNPCs(playerData.spokenNPCs);
         LocationHistoryTracker.LoadVisitedLocations(playerData.visitedLocations);
 
@@ -223,12 +252,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Game loaded.");
     }
 
+    // ── NEW GAME ──────────────────────────────────────────────
     public void NewGame()
     {
         SaveSystem.Delete();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    // ── AUTO-SAVE ─────────────────────────────────────────────
     private void OnApplicationQuit() => SaveGame();
     private void OnApplicationPause(bool pausing) { if (pausing) SaveGame(); }
 }
